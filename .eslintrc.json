@@ -13,5 +13,5 @@
 		"ecmaVersion": 2018,
 		"sourceType": "module"
 	},
-	"rules": { "no-tabs": "off", "indent": "off" }
+	"rules": { "no-tabs": "off", "indent": "off", "linebreak-style": 0 }
 }
