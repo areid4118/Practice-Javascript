@@ -22,3 +22,6 @@ multiplyAll([
 	[5, 6, 7],
 ]);
 // multiplyAll should return 6
+
+
+
