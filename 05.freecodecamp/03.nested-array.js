@@ -9,7 +9,7 @@ function multiplyAll(arr) {
 	// Only change code below this line
 	for (let i = 0; i < arr.length; i += 1) {
 		for (let j = 0; j < arr.length; j += 1) {
-			console.log(arr[i][j]);
+			product *= arr[i][j];
 		}
 	}
 	// Only change code above this line
@@ -22,6 +22,3 @@ multiplyAll([
 	[5, 6, 7],
 ]);
 // multiplyAll should return 6
-
-
-
