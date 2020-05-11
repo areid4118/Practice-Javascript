@@ -11,7 +11,8 @@ const computerGuess = () => {
 const btn = document.querySelector('button');
 
 btn.addEventListener('click', () => {
-	const userTyped = parseInt(document.querySelector('input').value);
+	// const userTyped = parseInt(document.querySelector('input').value);
+	const userTyped = parseInt(document.querySelector('select').value);
 	const cpuGuess = computerGuess();
 
 	if (Number.isNaN(userTyped) || userTyped > 5 || userTyped < 0) {
