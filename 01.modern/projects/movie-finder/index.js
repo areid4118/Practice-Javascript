@@ -1,5 +1,4 @@
 /* eslint-disable no-undef */
-/* eslint-disable prefer-spread */
 const fetchData = async (searchTerm) => {
 	const response = await axios.get('http://www.omdbapi.com/', {
 		params: {
@@ -8,25 +7,14 @@ const fetchData = async (searchTerm) => {
 		},
 	});
 
-	console.log(response.data);
+	return response.data.Search;
 };
 
 const input = document.querySelector('input');
 
-const debounce = (callback, delay = 1000) => {
-	let timeoutId;
-	return (...args) => {
-		if (timeoutId) {
-			clearTimeout(timeoutId);
-		}
-		timeoutId = setTimeout(() => {
-			callback.apply(null, args);
-		}, delay);
-	};
-};
-
-const onInput = (event) => {
-	fetchData(event.target.value);
+const onInput = async (event) => {
+	const movies = await fetchData(event.target.value);
+	console.log(movies);
 };
 
 input.addEventListener('input', debounce(onInput, 500));
