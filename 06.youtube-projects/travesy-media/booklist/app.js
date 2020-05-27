@@ -42,6 +42,14 @@ class UI {
 		list.appendChild(row);
 	}
 
+	// contains finds is an element has a certain class. Returns true or false
+	// two parent elements lets you target the grandparent
+	static deleteBook(elem) {
+		if (elem.classList.contains('delete')) {
+			elem.parentElement.parentElement.remove();
+		}
+	}
+
 	static clearFields() {
 		document.querySelector('#title').value = '';
 		document.querySelector('#author').value = '';
@@ -72,4 +80,8 @@ document.querySelector('#book-form').addEventListener('submit', (event) => {
 	// Clear fields
 	UI.clearFields();
 });
+
 // Event: Remove a Book
+document.querySelector('#book-list').addEventListener('click', (event) => {
+	UI.deleteBook(event.target);
+});
