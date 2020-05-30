@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Google Maps</title>
+		<style>
+			#map {
+				height: 400px;
+				width: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>My Google Map</h1>
+
+		<!-- Nothing goes inside the div -->
+		<!-- this is where the map will go -->
+		<div id="map"></div>
+
+		<script>
+			// since there is a callback function in the url like you always need to create an initMap
+			// used the coordinates of long island
+			// added a negative for longitude for some reason
+			// the map won't show until you set the height and width with css
+
+			function initMap() {
+				// options for the map
+				const options = {
+					zoom: 9,
+					center: { lat: 40.7891, lng: -73.135 },
+				};
+
+				// New Map
+				const map = new google.maps.Map(document.getElementById('map'), options);
+
+				// How to add multiple markers
+				// Add marker function
+				// only add props instead of just passing coords if you want to add a custom icon to special flags
+				const addMarker = (props) => {
+					const marker = new google.maps.Marker({
+						position: props.coords,
+						map: map,
+						// icon: props.iconImage,
+					});
+
+					// this is optional if you want custom icon images on special flags. Also the reason why props.iconImage is commented
+					// checks for custom icons
+					if (props.iconImage) {
+						// Sets icon image
+						marker.setIcon(props.iconImage);
+					}
+
+					// better idea to pass content to info markers
+					if (props.content) {
+						const infoWindow = new google.maps.InfoWindow({
+							content: props.content,
+						});
+
+						marker.addListener('click', () => {
+							infoWindow.open(map, marker);
+						});
+					}
+				};
+
+				// Array of markers (refactored)
+				// This would be stored in a database
+				const markers = [
+					{
+						coords: { lat: 40.8687, lng: -73.0015 },
+						iconImage:
+							'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+						content: '<h1>Coram, NY<h1>',
+					},
+					{
+						coords: { lat: 40.8048, lng: -73.3362 },
+						content: '<h1>Dix Hills, NY<h1>',
+					},
+					{
+						coords: { lat: 40.9465, lng: -73.0693 },
+					},
+				];
+
+				// Loop through markers
+				for (let i = 0; i < markers.length; i++) {
+					// Adds markers in the array above
+					addMarker(markers[i]);
+				}
+
+				// Below is how you would specifically call the function without an array
+				// addMarker({
+				// 	coords: { lat: 40.8687, lng: -73.0015 },
+				// 	iconImage:
+				// 		'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+				// 	content: '<h1>Coram, NY<h1>',
+				// });
+			}
+		</script>
+		<script
+			defer
+			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAakGOfrNPUY_uwVZ4nq-d74dGQcrcb1z0&callback=initMap"
+		></script>
+	</body>
+</html>
+
+<!-- 
+function initMap() {
+   // options for the map
+   const options = {
+      zoom: 8,
+      center: { lat: 40.7891, lng: -73.135 },
+   };
+
+   // New Map
+   const map = new google.maps.Map(document.getElementById('map'), options);
+
+   // Add marker
+   // the market takes in two arguments
+   // 1. for the position of the maker
+   // 2 the map you want to add it to
+   // Icons is used to change the style of the marker
+   const marker = new google.maps.Marker({
+      position: { lat: 40.8687, lng: -73.0015 },
+      map: map,
+      icon:
+         'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+   });
+
+   // Displays extra info when you click the marker
+   // use content to display the info you want
+   // Will not work unless you have the event listener below
+   const infoWindow = new google.maps.InfoWindow({
+      content: '<h1>Coram, NY</h1>',
+   });
+
+   marker.addListener('click', () => {
+      infoWindow.open(map, marker);
+   });
+} -->
