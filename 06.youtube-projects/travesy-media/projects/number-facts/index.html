@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+		/>
+		<style>
+			.icon-remove,
+			.icon-check {
+				display: none;
+			}
+		</style>
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" defer></script>
+		<title>Document</title>
+	</head>
+	<body>
+		<section class="hero hero-body is-dark container">
+			<h1 class="title">US Location Info</h1>
+			<h2 class="subtitle">Enter a zipcode to get the location info</h2>
+			<form id="zipForm">
+				<div class="field">
+					<div class="control has-icons-left has-icons-right">
+						<input class="input zip is-large" type="text" placeholder="Enter zip code" />
+						<span class="icon is-small is-left">
+							<i class="fa fa-map-pin"></i>
+						</span>
+						<span class="icon is-small is-right icon-check">
+							<i class="fa fa-check"></i>
+						</span>
+						<span class="icon is-small is-right icon-remove">
+							<i class="fa fa-remove"></i>
+						</span>
+					</div>
+				</div>
+			</form>
+		</section>
+
+		<br />
+		<div class="container">
+			<div id="output"></div>
+		</div>
+
+		<!-- Want to find city state lng and lat -->
+		<!-- inside data.places . whatever your looking for -->
+		<script>
+			const zipForm = document.querySelector('#zipForm');
+			const zip = document.querySelector('.zip');
+			const output = document.querySelector('#output');
+
+			const outputHTML = (res) => {
+				const place = res.data.places[0];
+				output.innerHTML = `
+					<article class="message is-primary">
+						<div class="message-header">
+							<p>Location Info</p>
+							<button class="delete"></button>
+						</div>
+
+						<div class="message-body">
+							<ul>
+								<li><strong>City: ${place['place name']}</strong></li>
+								<li><strong>State:  ${place.state}</strong></li>
+								<li><strong>Longitude: ${place.longitude}</strong></li>
+								<li><strong>Latitude: ${place.latitude}</strong></li>
+							</ul>
+						</div>
+					</article>
+				`;
+
+				return output.innerHTML;
+			};
+
+			const outputError = (err) => {
+				output.innerHTML = `
+								<article class="message message-body is-danger">
+									<div class="message-body">
+										Invalid zip code, please try again
+									</div>
+								</article>`;
+
+				return output.innerHTML;
+			};
+
+			const showIcon = (icon) => {
+				document.querySelector('.icon-remove').style.display = 'none';
+				document.querySelector('.icon-check').style.display = 'none';
+
+				document.querySelector(`.icon-${icon}`).style.display = 'inline-flex';
+			};
+
+			const getLocationInfo = (event) => {
+				event.preventDefault();
+
+				axios
+					.get(`https://api.zippopotam.us/us/${zip.value}`)
+					.then((response) => {
+						outputHTML(response);
+						showIcon('check');
+					})
+					.catch((error) => {
+						outputError(error);
+						showIcon('remove');
+					});
+			};
+
+			const clearInput = () => {
+				document.querySelector('.icon-check').style.display = 'none';
+				zip.value = '';
+			};
+
+			const deleteLocation = (event) => {
+				if (event.target.classList.contains('delete')) {
+					document.querySelector('.message').remove();
+					clearInput();
+				}
+			};
+
+			zipForm.addEventListener('submit', getLocationInfo);
+
+			document.body.addEventListener('click', deleteLocation);
+		</script>
+	</body>
+</html>

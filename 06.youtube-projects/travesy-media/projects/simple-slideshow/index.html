@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<img name="slide" width="400" height="200" />
+
+		<script>
+			let i = 0;
+			const TIME = 1000;
+			const images = [];
+
+			images[0] = 'image1.jpg';
+			images[1] = 'image2.jpg';
+			images[2] = 'image3.jpg';
+			images[3] = 'image4.jpg';
+
+			// can use slide directly because it is a name
+			const changeImg = () => {
+				document.slide.src = images[i];
+
+				// minus 1 because i is gong to show the index (based on zero) while length is the number (starting at 1)
+				// if i is not at the last image go to the next image else go back to the original  picture
+				if (i < images.length - 1) {
+					i++;
+				} else {
+					i = 0;
+				}
+
+				setTimeout('changeImg()', TIME);
+			};
+
+			window.onload = changeImg;
+		</script>
+	</body>
+</html>
