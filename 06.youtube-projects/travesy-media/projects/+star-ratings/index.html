@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+			integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+			crossorigin="anonymous"
+		/>
+		<title>4K TV Ratings</title>
+		<style>
+			.stars-outer {
+				position: relative;
+				display: inline-block;
+			}
+
+			/* Width will determine how many stars are yellow */
+			.stars-inner {
+				position: absolute;
+				top: 0;
+				left: 0;
+				white-space: nowrap;
+				overflow: hidden;
+				width: 0;
+			}
+
+			/* below outputs the stars */
+			/* you must add font-family and weight for the icons to work */
+			.stars-outer::before {
+				content: '\f005 \f005 \f005 \f005 \f005';
+				font-family: 'Font Awesome 5 Free';
+				font-weight: 900;
+				color: #ccc;
+			}
+
+			.stars-inner::before {
+				content: '\f005 \f005 \f005 \f005 \f005';
+				font-family: 'Font Awesome 5 Free';
+				font-weight: 900;
+				color: #f8ce0b;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container mt-5">
+			<div class="form-group">
+				<select id="product-select" class="form-control">
+					<!-- Disable is used so you cannot click on the select product. It is only used as a placeholder which is why it's selected in the UI -->
+					<option value="0" disabled selected>Select Product</option>
+					<option value="sony">Sony 4K TV</option>
+					<option value="samsung">Samsung 4K TV</option>
+					<option value="vizio">Vizio 4K TV</option>
+					<option value="panasonic">Panasonic 4K TV</option>
+					<option value="phillips">Phillips 4K TV</option>
+				</select>
+			</div>
+
+			<div class="form-group">
+				<input
+					type="number"
+					id="rating-control"
+					class="form-control"
+					step="0.1"
+					max="5"
+					placeholder="Rate 1-5"
+					disable=""
+				/>
+			</div>
+
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>4K Television</th>
+						<th>Ratings</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="sony">
+						<td>Sony 4K TV</td>
+						<td>
+							<div class="stars-outer">
+								<div class="stars-inner"></div>
+							</div>
+							<span class="number-rating"></span>
+						</td>
+					</tr>
+					<tr class="samsung">
+						<td>Samsung 4K TV</td>
+						<td>
+							<div class="stars-outer">
+								<div class="stars-inner"></div>
+							</div>
+							<span class="number-rating"></span>
+						</td>
+					</tr>
+					<tr class="vizio">
+						<td>Vizio 4K TV</td>
+						<td>
+							<div class="stars-outer">
+								<div class="stars-inner"></div>
+							</div>
+							<span class="number-rating"></span>
+						</td>
+					</tr>
+					<tr class="panasonic">
+						<td>Panasonic 4K TV</td>
+						<td>
+							<div class="stars-outer">
+								<div class="stars-inner"></div>
+							</div>
+							<span class="number-rating"></span>
+						</td>
+					</tr>
+					<tr class="phillips">
+						<td>Phillips 4K TV</td>
+						<td>
+							<div class="stars-outer">
+								<div class="stars-inner"></div>
+							</div>
+							<span class="number-rating"></span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<script>
+			const ratings = {
+				sony: 4.7,
+				samsung: 3.4,
+				vizio: 2.3,
+				panasonic: 3.6,
+				phillips: 4.1,
+			};
+
+			const starsTotal = 5;
+
+			const getRatings = () => {
+				for (const rating in ratings) {
+					// Ger percentage
+					const starPercentage = (ratings[rating] / starsTotal) * 100;
+
+					// Round to the nearest 10 (determines how many stars get filled)
+					const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}%`;
+
+					// Set width of stars-inner to percentage
+					document.querySelector(
+						`.${rating} .stars-inner`,
+					).style.width = starPercentageRounded;
+
+					// Add number rating
+					document.querySelector(`.${rating} .number-rating`).innerHTML = ratings[rating];
+				}
+			};
+
+			document.addEventListener('DOMContentLoaded', getRatings);
+
+			// Form controls
+			const productSelect = document.getElementById('product-select');
+			const ratingControl = document.getElementById('rating-control');
+
+			// Init product
+			let product;
+
+			// Product select change
+			productSelect.addEventListener('change', (e) => {
+				product = e.target.value;
+
+				// Enable rating control and get the value of the specific TV
+				ratingControl.disabled = false;
+				ratingControl.value = ratings[product];
+			});
+
+			// Change the rating control
+			ratingControl.addEventListener('blur', (event) => {
+				const rating = event.target.value;
+
+				// Make sure the rating is under 5
+				if (rating > 5) {
+					alert('Please Rate 1-5');
+					return;
+				}
+
+				// have to rerun the getRatings function to update
+				ratings[product] = rating;
+
+				getRatings();
+			});
+		</script>
+	</body>
+</html>

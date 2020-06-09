@@ -1,0 +1,36 @@
+body {
+	background: darksalmon;
+}
+
+.fill {
+	background-image: url('https://free-pptbackgrounds.com/wp-content/uploads/2019/04/max-complexity-blue-black-pptbackgrounds.jpg');
+	position: relative;
+	height: 150px;
+	width: 150px;
+	top: 5px;
+	left: 5px;
+	cursor: pointer;
+}
+
+.empty {
+	display: inline-block;
+	height: 160px;
+	width: 160px;
+	margin: 10px;
+	border: 3px salmon solid;
+	background-color: white;
+}
+
+/* dives the item dragged with a border for better UX */
+.hold {
+	border: solid #cccccc 4px;
+}
+
+.hovered {
+	background: #f4f4f4;
+	border-style: dashed;
+}
+
+.invisible {
+	display: none;
+}
